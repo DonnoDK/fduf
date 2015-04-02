@@ -39,8 +39,9 @@ struct dirnames_t* find_directories_in_path(const char* path){
     if(directory == NULL){
         if(errno == EACCES){
             fprintf(stderr, "error: permission denied: %s\n", path);
+        }else{
+            fprintf(stderr, "error: could not open path as directory: %s\n", path);
         }
-        fprintf(stderr, "error: could not open path as directory: %s\n", path);
         return NULL;
     }
     // TODO: check permission for dir (executable)
@@ -51,10 +52,10 @@ struct dirnames_t* find_directories_in_path(const char* path){
     dirnames->names[dirnames->count - 1] = strdup(path);
     
 
-
-    /*
+    /* refactoring begin here */
     struct paths_s* head = (struct paths_s*)malloc(sizeof(struct paths_s*));
     struct paths_s* current_path = head;
+    struct paths_s* last_elem = head;
     head->name = strdup(path);
     head->next = NULL;
 
@@ -69,8 +70,22 @@ struct dirnames_t* find_directories_in_path(const char* path){
             current_path = current_path->next;
             continue;
         }
+        struct dirent* entry = NULL;
+        while((entry = readdir(directory)) && entry != NULL){
+            if(entry->d_type == DT_DIR){
+                if(!strcmp(entry->d_name, ".") || !strcmp(entry->d_name, "..")){
+                    continue;
+                }
+                struct paths_s* elem = malloc(sizeof(struct paths_s*));
+                elem->name = concatinate_paths(current_path->name, entry->d_name);
+                last_elem->next = elem;
+                last_elem = elem;
+            }
+        }
+        closedir(directory);
+        current_path = current_path->next;
     }
-    */
+    /* refactoring end here */
 
     int current = 0;
     while(current != dirnames->count){
