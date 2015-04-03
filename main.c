@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <dirent.h>
 #include <errno.h>
+typedef enum {false, true} bool;
 char* concatinate_paths(const char* first_part, const char* last_part){
     char first_of_last_part = last_part[0];
     if(first_of_last_part == '/'){
@@ -29,7 +30,7 @@ struct paths_s{
     char* name;
     struct paths_s* next;
     unsigned char unique;
-    unsigned int short_checksum;
+    unsigned long long checksum;
 };
 
 
@@ -39,7 +40,7 @@ struct paths_s* element_with_path(char* path){
     elem->next = NULL;
     elem->size = 0;
     elem->unique = 0;
-    elem->short_checksum = 0;
+    elem->checksum = 0;
     return elem;
 }
 struct paths_s* find_type_in_paths(struct paths_s* paths, unsigned char type){
@@ -142,7 +143,7 @@ int filepath_has_unique_short_checksum(struct paths_s* path, struct paths_s* pat
             paths = paths->next;
             continue;
         }
-        if(paths->short_checksum == path->short_checksum){
+        if(paths->checksum == path->checksum){
             return 0;
         }
         paths = paths->next;
@@ -191,12 +192,12 @@ struct paths_s* prune_unique_filepaths(struct paths_s* paths){
     return head;
 }
 
-unsigned int short_checksum_for_filepath(const char* path){
+unsigned int checksum_for_filepath(const char* path){
     FILE* file = fopen(path, "rb");
     if(file == NULL){
         return 0;
     }
-    unsigned int checksum = 0;
+    unsigned long long checksum = 0;
     unsigned char buffer[1024];
     fread(buffer, 1024, sizeof(unsigned char), file);
     for(int i = 0; i < 1024; i++){
@@ -205,11 +206,24 @@ unsigned int short_checksum_for_filepath(const char* path){
     fclose(file);
     return checksum;
 }
-void calculate_short_checksum_for_paths(struct paths_s* paths){
+void calculate_checksum_for_paths(struct paths_s* paths){
     while(paths != NULL){
-        paths->short_checksum = short_checksum_for_filepath(paths->name);
+        paths->checksum = checksum_for_filepath(paths->name);
         paths = paths->next;
     }
+}
+
+struct paths_s* all_files_in_base_path(const char* path, bool recursive){
+    struct paths_s* base = element_with_path(strdup(path));
+    if(recursive == true){
+        struct paths_s* directories = find_type_in_paths(base, DT_DIR);
+        struct paths_s* files = find_type_in_paths(directories, DT_REG);
+        delete_list(directories);
+        return files;
+    }
+    struct paths_s* files = find_type_in_paths(base, DT_REG);
+    delete_element(base);
+    return files;
 }
 
 int main(int argc, char** argv){
@@ -218,19 +232,24 @@ int main(int argc, char** argv){
         fprintf(stderr, "error: no path given\n");
         return 1;
     }
-    struct paths_s* base = element_with_path(strdup(argv[1]));
-    struct paths_s* directories = find_type_in_paths(base, DT_DIR);
-    struct paths_s* files = find_type_in_paths(directories, DT_REG);
-    delete_list(directories);
+    struct paths_s* files = all_files_in_base_path(argv[1], true);
     size_for_files_in_paths(files);
     mark_unique_filepaths_on_size(files);
     files = prune_unique_filepaths(files);
-    calculate_short_checksum_for_paths(files);
+    if(files == NULL){
+        fprintf(stderr, "pruned all on filesize\n");
+        return 0;
+    }
+    calculate_checksum_for_paths(files);
     mark_unique_filepaths_on_short_checksum(files);
     files = prune_unique_filepaths(files);
+    if(files == NULL){
+        fprintf(stderr, "pruned all 2\n");
+        return 0;
+    }
     struct paths_s* files_head = files;
     while(files != NULL){
-        printf("%s, size: %d,  checksum: %d\n", files->name, files->size, files->short_checksum);
+        printf("%s, size: %d,  checksum: %lld\n", files->name, files->size, files->checksum);
         files = files->next;
     }
     delete_list(files_head);
