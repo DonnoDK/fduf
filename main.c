@@ -31,6 +31,7 @@ struct paths_s{
     struct paths_s* next;
     unsigned char unique;
     unsigned long long checksum;
+    bool printed;
 };
 
 
@@ -41,6 +42,7 @@ struct paths_s* element_with_path(char* path){
     elem->size = 0;
     elem->unique = 0;
     elem->checksum = 0;
+    elem->printed = false;
     return elem;
 }
 struct paths_s* find_type_in_paths(struct paths_s* paths, unsigned char type){
@@ -160,7 +162,7 @@ void mark_unique_filepaths_on_size(struct paths_s* paths){
     }
 }
 
-void mark_unique_filepaths_on_short_checksum(struct paths_s* paths){
+void mark_unique_filepaths_on_checksum(struct paths_s* paths){
     struct paths_s* head = paths;
     while(paths != NULL){
         paths->unique = filepath_has_unique_short_checksum(paths, head);
@@ -192,23 +194,31 @@ struct paths_s* prune_unique_filepaths(struct paths_s* paths){
     return head;
 }
 
-unsigned int checksum_for_filepath(const char* path){
+unsigned int checksum_for_filepath(const char* path, unsigned long long checksum_size){
     FILE* file = fopen(path, "rb");
     if(file == NULL){
         return 0;
     }
+    unsigned int size = size_for_file_at_path(path);
     unsigned long long checksum = 0;
-    unsigned char buffer[1024];
-    fread(buffer, 1024, sizeof(unsigned char), file);
-    for(int i = 0; i < 1024; i++){
+    if(checksum_size == 0){
+        checksum_size = size;
+    }
+    unsigned char buffer[checksum_size];
+    memset(buffer, 0, checksum_size);
+    if(checksum_size != size){
+        fseek(file, size - checksum_size, SEEK_SET); 
+    }
+    fread(buffer, checksum_size, sizeof(unsigned char), file);
+    for(int i = 0; i < checksum_size; i++){
         checksum = checksum + (buffer[i] % 255);
     }
     fclose(file);
     return checksum;
 }
-void calculate_checksum_for_paths(struct paths_s* paths){
+void calculate_checksum_for_paths(struct paths_s* paths, unsigned int checksum_size){
     while(paths != NULL){
-        paths->checksum = checksum_for_filepath(paths->name);
+        paths->checksum = checksum_for_filepath(paths->name, checksum_size);
         paths = paths->next;
     }
 }
@@ -226,6 +236,16 @@ struct paths_s* all_files_in_base_path(const char* path, bool recursive){
     return files;
 }
 
+void print_files_with_checksum(struct paths_s* paths, unsigned long long checksum){
+    while(paths != NULL){
+        if(paths->printed == false && paths->checksum == checksum){
+            printf("%s, size: %d\n", paths->name, paths->size);
+            paths->printed = true;
+        }
+        paths = paths->next;
+    }
+}
+
 int main(int argc, char** argv){
     /* TODO: checkout input */
     if(argv[1] == NULL){
@@ -240,16 +260,27 @@ int main(int argc, char** argv){
         fprintf(stderr, "pruned all on filesize\n");
         return 0;
     }
-    calculate_checksum_for_paths(files);
-    mark_unique_filepaths_on_short_checksum(files);
+    calculate_checksum_for_paths(files, 1024);
+    mark_unique_filepaths_on_checksum(files);
     files = prune_unique_filepaths(files);
     if(files == NULL){
-        fprintf(stderr, "pruned all 2\n");
+        fprintf(stderr, "pruned all on 1024b checksum\n");
+        return 0;
+    }
+    calculate_checksum_for_paths(files, 0);
+    mark_unique_filepaths_on_checksum(files);
+    files = prune_unique_filepaths(files);
+    if(files == NULL){
+        fprintf(stderr, "pruned all on full checksum\n");
         return 0;
     }
     struct paths_s* files_head = files;
     while(files != NULL){
-        printf("%s, size: %d,  checksum: %lld\n", files->name, files->size, files->checksum);
+        if(files->printed == false){
+        printf("checksum: %lld\n", files->checksum);
+        print_files_with_checksum(files_head, files->checksum);
+        printf("\n");
+        }
         files = files->next;
     }
     delete_list(files_head);
