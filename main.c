@@ -43,7 +43,6 @@ struct fileinfo* prune_unique_files(struct fileinfo* list){
     return list;
 }
 
-
 int main(int argc, char** argv){
     /* TODO: checkout input */
     if(argv[1] == NULL){
