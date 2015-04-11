@@ -6,8 +6,8 @@ sub-directories.
 
 So, what's the status mister
 ---------------------------
-It works, but there are no logic for parsing additional command-line arguments.
-The following are in the works however:
+It works, but there's no logic for parsing additional command-line arguments.
+The following options are in the works however:
 
 - verbose mode, additional info on the scan (filesizes, count on files
   considered),
