@@ -45,6 +45,11 @@ struct fileinfo* prune_unique_files(struct fileinfo* list){
 
 int main(int argc, char** argv){
     /* TODO: checkout input */
+    /* TODO: add argument options */
+    /*          -v: verbose*/
+    /*          -r: recursive*/
+    /*          --exlude-dir=<name>: exclude directories with same name as <name>*/
+
     if(argv[1] == NULL){
         fprintf(stderr, "error: no path given\n");
         return 1;
