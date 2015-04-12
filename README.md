@@ -32,7 +32,7 @@ the result to `stdout`
 
 Since speed is a priority, `fduf` works as follows:
 
-- collect a set of filenames from the path specified (recursively by default),
+- collect a set of filenames from the path specified (recursively with option -r),
 - prune files which have a unique size,
 - compute a relatively small and simple checksum for the remaining files,
 - prune again files which have a unique checksum,
