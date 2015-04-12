@@ -60,3 +60,8 @@ So what needs work?
 - the manpage,
 - formatting options, and
 - option for excluding directories matching some given name(s)
+
+Similar work
+---------------------------
+- https://github.com/adrianlopezroche/fdupes - Very extensive with many options. Can also delete duplicates.
+- https://github.com/peturingi/einfalda - A Java implementation
