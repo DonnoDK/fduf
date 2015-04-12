@@ -1,7 +1,6 @@
 struct fileinfo{
     unsigned int size;
     char* name;
-    unsigned char unique;
     unsigned long long checksum;
     unsigned char* md5;
     struct fileinfo* next;

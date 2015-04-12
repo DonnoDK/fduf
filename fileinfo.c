@@ -9,7 +9,6 @@ struct fileinfo* fileinfo_new(){
     elem->name = NULL;
     elem->next = NULL;
     elem->size = 0;
-    elem->unique = 0;
     elem->checksum = 0;
     elem->md5 = NULL;
     return elem;
