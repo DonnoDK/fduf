@@ -54,7 +54,7 @@ The path for files within a _set_ of duplicates are printed seperated by a newli
     ~/music/rhcp/one hot minute/aeroplane.flac
     $
   
-<sub>_(Sony, please don't sue me - it's just an example!)_</sub>
+<sub>_(~~Sony~~ Warner Bros., please don't sue me - it's just an example!)_</sub>
 
 So what needs work?
 ---------------------------
