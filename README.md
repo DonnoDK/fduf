@@ -66,4 +66,4 @@ So what needs work?
 Similar work
 ---------------------------
 - https://github.com/adrianlopezroche/fdupes - Very extensive with many options. Can also delete duplicates.
-- https://github.com/peturingi/einfalda - A Java implementation
+- https://github.com/peturingi/einfalda - A Java implementation.
