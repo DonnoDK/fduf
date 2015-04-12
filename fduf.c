@@ -82,8 +82,8 @@ int main(int argc, char** argv){
     if(files == NULL){
         if(verbose == 1){
             fprintf(stderr, "fduf: no duplicates found\n");
-            return 0;
         }
+        return 0;
     }
     if(verbose == 1){
         printf("fduf: files after pruning: %d\n", fileinfo_list_count(files));
