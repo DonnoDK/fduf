@@ -4,20 +4,22 @@ Or `fduf` for short, is a command-line tool for finding duplicate files.
 `fduf` can either scan only the path given or recursively through
 sub-directories.
 
-So, what's the status mister
+So, what's the status mister?
 ---------------------------
 It works, with the following options available:
 
-- verbose mode, additional info on the scan (filesizes, total number of files
+- `-v` verbose mode, additional info on the scan (filesizes, total number of files
   considered), and
-- recursive scanning
+- `-r` recursive scanning
 
 The following options are considered for future versions:
 - exclude directories with a given name or matching a regular expression, and
 - options for formatting, making it easier to redirect output to other CLI
   tools
 
-How does it work
+There's a, currently incomplete, manpage for `fduf` which should tell the same as above.
+
+How does it work?
 ---------------------------
 Something along the lines of
 
@@ -42,7 +44,7 @@ Since speed is a priority, `fduf` works as follows:
 The resulting set of files is sorted based on size and paths are printed to
 `stdout` as mentioned.
 
-The path for _sets_ of duplicate files are printed, seperated by a newline character (`\n`), with each set seperated by an additional newline character, such as
+The path for files within a _set_ of duplicates are printed seperated by a newline character (`\n`), and each set is seperated by an additional newline character, such as
 
     $ fduf -r ~/music/rhcp
     ~/music/rhcp/some_greatest_album/walkabout.flac
