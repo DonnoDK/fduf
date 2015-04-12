@@ -54,7 +54,7 @@ The path for files within a _set_ of duplicates are printed seperated by a newli
     ~/music/rhcp/one hot minute/aeroplane.flac
     $
   
-<sub>_(Sony, please don't sue me - it's just an example!)_</sub>
+<sub>_(~~Sony~~ Warner Bros., please don't sue me - it's just an example!)_</sub>
 
 So what needs work?
 ---------------------------
@@ -67,3 +67,5 @@ Similar work
 ---------------------------
 - https://github.com/adrianlopezroche/fdupes - Very extensive with many options. Can also delete duplicates.
 - https://github.com/peturingi/einfalda - A Java implementation.
+- https://github.com/phiresky/dupegone - The projects README also presents some interesting results w.r.t. speed and approach.
+- https://github.com/sahib/rmlint - Currently the fastest (that I know of and save for the bash-script mentioned in the above project) duplicate files finder.
