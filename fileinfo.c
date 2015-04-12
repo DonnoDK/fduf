@@ -101,7 +101,6 @@ static unsigned char* md5_for_filepath(const char* path, unsigned int filesize){
 
 void fileinfo_get_md5_for_list(struct fileinfo* list){
     while(list != NULL){
-        // TODO: implement
         list->md5 = md5_for_filepath(list->name, size_for_file_at_path(list->name));
         list = list->next;
     }
@@ -114,7 +113,7 @@ static int compare_fileinfo_size(const void* a, const void* b){
         return -1;
     }
     if(fa->size == fb->size){
-        return fileinfo_equals(fa, fb);
+        return !fileinfo_equals(fa, fb);
     }
     if(fa->size > fb->size){
         return 1;
