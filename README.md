@@ -68,4 +68,4 @@ Similar work
 - https://github.com/adrianlopezroche/fdupes - Very extensive with many options. Can also delete duplicates.
 - https://github.com/peturingi/einfalda - A Java implementation.
 - https://github.com/phiresky/dupegone - The projects README also presents some interesting results w.r.t. speed and approach.
-- https://github.com/sahib/rmlint - Currently the fastest (that I know of) duplicate files finder.
+- https://github.com/sahib/rmlint - Currently the fastest (that I know of and save for the bash-script mentioned in the above project) duplicate files finder.
