@@ -125,9 +125,12 @@ static int compare_fileinfo_size(const void* a, const void* b){
 
 
 struct fileinfo* fileinfo_list_sort_on_filesize(struct fileinfo* list){
-    int count = 0;
-    for(struct fileinfo* temp = list; temp != NULL; temp = temp->next){
-        count++;
+    if(list == NULL){
+        return NULL;
+    }
+    unsigned count = fileinfo_list_count(list);
+    if(count == 0){
+        return NULL;
     }
     struct fileinfo* array[count];
     int i = 0;
@@ -145,6 +148,9 @@ struct fileinfo* fileinfo_list_sort_on_filesize(struct fileinfo* list){
 }
 
 unsigned int fileinfo_equals(const struct fileinfo* f1, const struct fileinfo* f2){
+    if(f1 == NULL || f2 == NULL){
+        return 0;
+    }
     if(f1->size == f2->size && f1->checksum == f2->checksum){
         if(f1->md5 != NULL && f2->md5 != NULL){
             for(int i = 0; i < MD5_DIGEST_LENGTH; i++){
@@ -156,4 +162,28 @@ unsigned int fileinfo_equals(const struct fileinfo* f1, const struct fileinfo* f
         return 1;
     }
     return 0;
+}
+
+unsigned int fileinfo_list_count(const struct fileinfo* list){
+    if(list == NULL){
+        return 0;
+    }
+    unsigned int count = 0;
+    while(list != NULL){
+        count++;
+        list = list->next;
+    }
+    return count;
+}
+
+unsigned int fileinfo_list_total_filesize(const struct fileinfo* list){
+    if(list == NULL){
+        return 0;
+    }
+    unsigned int size = 0;
+    while(list != NULL){
+        size += list->size;
+        list = list->next;
+    }
+    return size;
 }

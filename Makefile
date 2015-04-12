@@ -1,18 +1,18 @@
-
 TARGET = fduf
 OBJECTS = ${TARGET}.o getfiles.o fileinfo.o
 MANFILE = ${TARGET}.1
+CC = gcc
 
 all: ${TARGET}
 	@echo finished building ${TARGET}
 
 ${TARGET}: ${OBJECTS}
 	@echo linking ${TARGET}
-	@gcc ${OBJECTS} -o ${TARGET} -lcrypto
+	@${CC} ${OBJECTS} -o ${TARGET} -lcrypto
 
 .c.o:
 	@echo compiling $*.c
-	@gcc -c $*.c
+	@${CC} -c $*.c
 
 
 clean:

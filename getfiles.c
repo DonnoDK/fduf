@@ -73,6 +73,9 @@ static struct fileinfo* find_type_in_paths(struct fileinfo* paths, unsigned char
 }
 
 struct fileinfo* filenames_in_path(const char* path, int recursive){
+    if(path == NULL){
+        return NULL;
+    }
     struct fileinfo* base = fileinfo_new();
     base->name = strdup(path);
     if(recursive == 1){
