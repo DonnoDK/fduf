@@ -12,7 +12,7 @@ ${TARGET}: ${OBJECTS}
 
 .c.o:
 	@echo compiling $*.c
-	@${CC} -c $*.c
+	@${CC} -std=c99 -c $*.c
 
 
 clean:
