@@ -42,7 +42,7 @@ Since speed is a priority, `fduf` works as follows:
 The resulting set of files is sorted based on size and paths are printed to
 `stdout` as mentioned.
 
-The path for _Sets_ of duplicate files are printed, seperated by a newline character (`\n`), with each set seperated by an additional newline character, such as
+The path for _sets_ of duplicate files are printed, seperated by a newline character (`\n`), with each set seperated by an additional newline character, such as
 
     $ fduf -r ~/music/rhcp
     ~/music/rhcp/some_greatest_album/walkabout.flac
