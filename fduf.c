@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <unistd.h>
+#include <openssl/md5.h>
 #include "fileinfo.h"
 #include "getfiles.h"
 
@@ -43,7 +44,7 @@ struct fileinfo* prune_unique_files(struct fileinfo* list){
 
 void usage(){
     printf("usage: fduf [options] [path]\n");
-    printf("options:\n-v\tverbose output\n-r\tscan is recursive\n");
+    printf("options:\n-v\tverbose output\n-r\tscan is recursive\n-m\tprint the md5 hash after each filename");
 }
 
 
@@ -56,11 +57,13 @@ int main(int argc, char** argv){
     const char* path = argv[argc - 1];
     int verbose = 0;
     int recursive = 0;
+    int print_md5_hash = 0;
     int opt;
-    while((opt = getopt(argc, argv, "rv")) != -1){
+    while((opt = getopt(argc, argv, "rvm")) != -1){
         switch(opt){
             case 'r': recursive = 1; break;
             case 'v': verbose = 1; break;
+            case 'm': print_md5_hash = 1; break;
             default: usage(); return 1;
         }
     }
@@ -92,7 +95,15 @@ int main(int argc, char** argv){
     files = fileinfo_list_sort_on_filesize(files);
     struct fileinfo* elem = NULL;
     for(elem = files; elem != NULL; elem = elem->next){
-        printf("%s\n", elem->name);
+        if(print_md5_hash == 1){
+            printf("%s ", elem->name);
+            for(int i = 0; i < MD5_DIGEST_LENGTH; i++){
+                printf("%02x", elem->md5[i]);
+            }
+            printf("\n");
+        }else{
+            printf("%s\n", elem->name);
+        }
         if(elem->next != NULL){
             if(fileinfo_equals(elem, elem->next) == 0){
                 printf("\n");
