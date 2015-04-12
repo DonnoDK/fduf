@@ -6,26 +6,28 @@ sub-directories.
 
 So, what's the status mister
 ---------------------------
-It works, but there's no logic for parsing additional command-line arguments.
-The following options are in the works however:
+It works, with the following options available:
 
-- verbose mode, additional info on the scan (filesizes, count on files
-  considered),
-- exclude directories with a given name or matching a regular expression,
+- verbose mode, additional info on the scan (filesizes, total number of files
+  considered), and
+- recursive scanning
+
+The following options are considered for future versions:
+- exclude directories with a given name or matching a regular expression, and
 - options for formatting, making it easier to redirect output to other CLI
   tools
 
 How does it work
 ---------------------------
-Ehm, it's not set in stone yet, but something along the lines of
+Something along the lines of
 
-    $ fduf [path]
+    $ fduf [options] [path]
 
-works at the moment. As an example
+with an example looking like
 
-    $ fdup .
+    $ fduf -r ~/music
 
-would search the current directory recursively for duplicate files and output
+The example would search the current user's music stash recursively for duplicate files and output
 the result to `stdout`
 
 Since speed is a priority, `fduf` works as follows:
@@ -40,6 +42,21 @@ Since speed is a priority, `fduf` works as follows:
 The resulting set of files is sorted based on size and paths are printed to
 `stdout` as mentioned.
 
-So what's missing?
+The path for _Sets_ of duplicate files are printed, seperated by a newline character (`\n`), with each set seperated by an additional newline character, such as
+
+    $ fduf -r ~/music/rhcp
+    ~/music/rhcp/some_greatest_album/walkabout.flac
+    ~/music/rhcp/one hot minute/walkabout.flac
+      
+    ~/music/rhcp/some_greatest_album/aeroplane.flac
+    ~/music/rhcp/one hot minute/aeroplane.flac
+    $
+  
+<sub>_(Sony, please don't sue me - it's just an example!)_</sub>
+
+So what needs work?
 ---------------------------
-Argument options and a proper makefile. Pull requests are welcome.
+- The makefile,
+- the manpage,
+- formatting options, and
+- option for excluding directories matching some given name(s)
