@@ -10,7 +10,7 @@ struct fileinfo* fileinfo_new();
 void fileinfo_delete(struct fileinfo* fi);
 void fileinfo_list_delete(struct fileinfo* list);
 unsigned int fileinfo_list_count(const struct fileinfo* list);
-unsigned int fileinfo_list_total_filesize(const struct fileinfo* list);
+unsigned long long fileinfo_list_total_filesize(const struct fileinfo* list);
 void fileinfo_get_filesize_for_list(struct fileinfo* list);
 void fileinfo_get_checksum_for_list(struct fileinfo* list);
 void fileinfo_get_md5_for_list(struct fileinfo* list);

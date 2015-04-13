@@ -174,11 +174,11 @@ unsigned int fileinfo_list_count(const struct fileinfo* list){
     return count;
 }
 
-unsigned int fileinfo_list_total_filesize(const struct fileinfo* list){
+unsigned long long fileinfo_list_total_filesize(const struct fileinfo* list){
     if(list == NULL){
         return 0;
     }
-    unsigned int size = 0;
+    unsigned long long size = 0;
     while(list != NULL){
         size += list->size;
         list = list->next;

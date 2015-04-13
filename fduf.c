@@ -75,7 +75,7 @@ int main(int argc, char** argv){
     fileinfo_get_filesize_for_list(files);
     if(verbose == 1){
         printf("fduf: files found: %d\n", fileinfo_list_count(files));
-        printf("fduf: total filesize: %db\n", fileinfo_list_total_filesize(files));
+        printf("fduf: total filesize: %lldb\n", fileinfo_list_total_filesize(files));
     }
     files = prune_unique_files(files);
     fileinfo_get_checksum_for_list(files);
@@ -90,7 +90,7 @@ int main(int argc, char** argv){
     }
     if(verbose == 1){
         printf("fduf: files after pruning: %d\n", fileinfo_list_count(files));
-        printf("fduf: bytes occupied by duplicates: %db\n", fileinfo_list_total_filesize(files));
+        printf("fduf: bytes occupied by duplicates: %lldb\n", fileinfo_list_total_filesize(files));
     }
     files = fileinfo_list_sort_on_filesize(files);
     struct fileinfo* elem = NULL;
