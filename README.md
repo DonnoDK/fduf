@@ -11,6 +11,7 @@ It works, with the following options available:
 - `-v` verbose mode, additional info on the scan (filesizes, total number of files
   considered), and
 - `-r` recursive scanning
+- `-m` include a paths md5 hash value in the output
 
 The following options are considered for future versions:
 - exclude directories with a given name or matching a regular expression, and
@@ -62,6 +63,8 @@ So what needs work?
 - the manpage,
 - formatting options, and
 - option for excluding directories matching some given name(s)
+
+Suggestions, critique, pull requests and other contributions are welcome.
 
 Similar work
 ---------------------------
