@@ -73,3 +73,4 @@ Similar work
 - https://github.com/phiresky/dupegone - The projects README also presents some interesting results w.r.t. speed and approach.
 - https://github.com/sahib/rmlint - Currently the fastest (that I know of and save for the bash-script mentioned in the above project) duplicate files finder.
 - https://github.com/cpbills/tools/blob/master/smart-dupe - Written in Perl.
+- http://rdfind.pauldreik.se - A relatively older tool, available in most package managers. Depends on the [Nettle](http://www.lysator.liu.se/%7Enisse/nettle/) library.
